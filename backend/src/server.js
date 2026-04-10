@@ -1,4 +1,3 @@
-//this is signup branch
 import express from 'express';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes.js';
