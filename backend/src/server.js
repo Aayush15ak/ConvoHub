@@ -20,12 +20,22 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-    try {
-        connectDB();
-        console.log('Database connection successful');
-    } catch (error) {
-        console.error('Error connecting to database:', error);
-    }
+// its better to connect to db first and then start the server, so that if db connection fails, we won't have a running server without db connection
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}).catch((error) => {
+    console.error('Error connecting to database:', error);
+    process.exit(1);
 });
+
+// app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:${port}`);
+//     try {
+//         connectDB();
+//         console.log('Database connection successful');
+//     } catch (error) {
+//         console.error('Error connecting to database:', error);
+//     }
+// });
