@@ -43,8 +43,8 @@ export function createWelcomeEmailTemplate(name, clientURL) {
         <ul style="margin:0; padding-left:18px; color:#cbd5e1; line-height:1.8;">
           <li>Set up your profile</li>
           <li>Add your contacts</li>
-          <li>Start chatting instantly</li>
-          <li>Share your memories via photos , videos and more</li>
+          <li>Start chatting instantly with your friends !!</li>
+          <li>Share your memories via photos, videos and more</li>
         </ul>
       </div>
 
@@ -66,6 +66,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
         If you did not sign up, you can safely ignore this email.
       </p>
     </div>   
+
   </div>
 
 </body>
