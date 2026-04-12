@@ -4,6 +4,7 @@ import authRoutes from './routes/auth.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import cors from "cors";
 import connectDB from './lib/db.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(cors({
   origin: "https://convohub-app.vercel.app",
