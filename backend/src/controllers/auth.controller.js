@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../lib/utils.js';
 import { sendWelcomeEmail } from '../emails/emailHandlers.js';
+import cloudinary from 'cloudinary';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -115,4 +116,24 @@ export const logout = async (_,res) => {
         secure : process.env.NODE_ENV === 'production' ? true : false
     });
     res.status(200).json({ message: 'Logged out successfully' });
+}
+
+export const updateProfile = async (req,res) => {
+    try{
+        const {profilePic} = req.body;
+        if(!profilePic){
+            return res.status(400).json({ message: 'Profile picture is required' });
+        }
+        const userId = req.user._id;
+        const result = await cloudinary.uploader.upload(profilePic);
+        const updatedUser = await User.findByIdAndUpdate(userId, { profilePic: result.secure_url }, { new: true }).select('-password');
+        if(!updatedUser){
+            return res.status(500).json({ message: 'Failed to update profile' });
+        }
+        res.status(200).json(updatedUser);
+    }
+    catch(error){
+        console.error('Error in updateProfile:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 }
