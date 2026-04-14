@@ -9,3 +9,13 @@ export const rateLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+export const MessageRateLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 50, // limit each IP to 50 messages per window
+  message: {
+    message: "Too many messages, slow down!"
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
