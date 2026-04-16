@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "https://convohub-app.vercel.app",
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
