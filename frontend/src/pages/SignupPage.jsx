@@ -5,9 +5,13 @@ import { MessageCircleIcon, LockIcon, MailIcon, UserIcon, LoaderIcon } from "luc
 import { Link } from "react-router";
 
 function SignupPage() {
-  const [formData, setformData] = useState({fullName: "", email: "", password: ""});
-  const { signup, isSigningUp} = useAuthStore();
-  const handleSubmit = (e) => {};
+  const [formData, setFormData] = useState({ fullName: "", email: "", password: "" });
+  const { signup, isSigningUp } = useAuthStore();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signup(formData);
+  };
 
   return (
     <div className="w-full flex items-center justify-center p-4 bg-slate-900">
@@ -92,12 +96,29 @@ function SignupPage() {
               </div>
             </div>
 
-            
+            {/* FORM ILLUSTRATION - RIGHT SIDE */}
+            <div className="hidden md:w-1/2 md:flex items-center justify-center p-6 bg-gradient-to-bl from-slate-800/20 to-transparent">
+              <div>
+                <img
+                  src="/signup.png"
+                  alt="People using mobile devices"
+                  className="w-full h-auto object-contain"
+                />
+                <div className="mt-6 text-center">
+                  <h3 className="text-xl font-medium text-cyan-400">Start Your Journey Today</h3>
+
+                  <div className="mt-4 flex justify-center gap-4">
+                    <span className="auth-badge">Free</span>
+                    <span className="auth-badge">Easy Setup</span>
+                    <span className="auth-badge">Private</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </BorderAnimatedContainer>
       </div>
     </div>
   );
 }
-
 export default SignupPage;
