@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
-import { LogOutIcon, VolumeOffIcon, Volume2Icon, Eye, Upload } from "lucide-react";
+import { LogOutIcon, VolumeOffIcon, Volume2Icon, Eye, Upload, Loader2 } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 
 const mouseClickSound = new Audio("/sounds/mouse-click.mp3");
 
 function ProfileHeader() {
-    const { logout, authUser, updateProfile } = useAuthStore();
+    const { logout, authUser, updateProfile, isUpdatingProfilePic } = useAuthStore();
     const { isSoundEnabled, toggleSound } = useChatStore();
     const [selectedImg, setSelectedImg] = useState(null);
     const [showProfilePicture, setshowProfilePicture] = useState(false);
@@ -36,11 +36,17 @@ function ProfileHeader() {
                     <div className="avatar online">
                         <div className="size-14 rounded-full overflow-hidden relative group cursor-pointer">
                             
-                            <img
-                                src={selectedImg || authUser.profilePic || "/avatar.png"}
-                                alt="User image"
-                                className="size-full object-cover"
-                            />
+                            {isUpdatingProfilePic ? (
+                                <div className="size-full flex items-center justify-center bg-slate-800">
+                                    <Loader2 className="size-6 text-slate-300 animate-spin" />
+                                </div>
+                            ) : (
+                                <img
+                                    src={selectedImg || authUser.profilePic || "/avatar.png"}
+                                    alt="User image"
+                                    className="size-full object-cover"
+                                />
+                            )}
 
                             {/* HOVER ACTIONS */}
                             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
