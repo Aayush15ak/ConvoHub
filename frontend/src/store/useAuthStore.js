@@ -6,6 +6,7 @@ export const useAuthStore = create((set) => ({
     authUser : null,
     isCheckingAuth : true,
     isSigningUp: false,
+    isUpdatingProfilePic: false,
 
     checkAuth : async() => {
         try {
@@ -71,6 +72,7 @@ export const useAuthStore = create((set) => ({
     },
     //TO-DO ... while the profile pic is getting updating i want a loader on the avatar icon ... as now while the pic is updating in the backend the frontend already shows the pic before its even updated in the backend
     updateProfile : async(data) => {
+        set({isUpdatingProfilePic : true});
         try{
             const res = await axiosInstance.put("/auth/update-profile", data);
             set({ authUser: res.data });
@@ -79,6 +81,9 @@ export const useAuthStore = create((set) => ({
         catch (error) {
             console.log("Error in update profile:", error);
             toast.error(error.response?.data?.message || "Failed to update profile picture. Please try again.");
+        }
+        finally{
+            set({isUpdatingProfilePic : false});
         }
     }
 }))
