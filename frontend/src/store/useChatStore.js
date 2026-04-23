@@ -38,7 +38,7 @@ export const useChatStore = create((set,get)=>({
         set({isUsersLoading: true});
         try {
             const res=await axiosInstance.get("/messages/chats");
-            set({allContacts: res.data});
+            set({chats : res.data});
         }
         catch (error) {
             toast.error(error.response.data.message || "Unable to get chat partners");
