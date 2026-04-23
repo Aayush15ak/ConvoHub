@@ -2,7 +2,7 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../lib/utils.js';
 import { sendWelcomeEmail } from '../emails/emailHandlers.js';
-import cloudinary from 'cloudinary';
+import cloudinary from '../lib/cloudinary.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -124,18 +124,19 @@ export const updateProfile = async (req,res) => {
         if(!profilePic){
             return res.status(400).json({ message: 'Profile picture is required' });
         }
-        console.log("profilePic type:", typeof profilePic);
-        console.log("profilePic starts:", profilePic?.slice(0, 30));
         const userId = req.user._id;
-        const result = await cloudinary.uploader.upload(profilePic);
-        const updatedUser = await User.findByIdAndUpdate(userId, { profilePic: result.secure_url }, { new: true }).select('-password');
+        const result = await cloudinary.uploader.upload(profilePic, {
+            folder: "profile_pics",
+        });
+        const updatedUser = await User.findByIdAndUpdate(userId, { profilePic: result.secure_url }, { returnDocument : 'after' }).select('-password');
         if(!updatedUser){
             return res.status(500).json({ message: 'Failed to update profile' });
         }
         res.status(200).json(updatedUser);
     }
-    catch(error){
-        console.error('Error in updateProfile:', error);
-        return res.status(500).json({message: error.message || "Internal server error",});
+    catch (error) {
+        console.error("FULL ERROR:", error);
+        console.error("RESPONSE:", error?.response);
+        return res.status(500).json({ message: error.message });
     }
 }
