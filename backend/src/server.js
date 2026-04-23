@@ -5,9 +5,8 @@ import messageRoutes from './routes/message.routes.js';
 import cors from "cors";
 import connectDB from './lib/db.js';
 import cookieParser from 'cookie-parser';
-import cloudinary from './lib/cloudinary.js';
-
 dotenv.config();
+import cloudinary from './lib/cloudinary.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
