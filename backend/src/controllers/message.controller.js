@@ -1,5 +1,6 @@
 import Message from "../models/message.js";
 import User from "../models/User.js";
+import cloudinary from "../lib/cloudinary.js"; 
 
 // to-do: Users can only chat with people they manually added as contacts, so we need to implement add contact feature in future and then only show those contacts in contacts list and allow users to chat with only those contacts, for now we are allowing users to chat with anyone by showing all users in contacts list except their own account
 export const getAllContacts = async (req, res) => {
