@@ -109,7 +109,7 @@ export const useAuthStore = create((set,get) => ({
         set({ socket : socket});
 
         // listen for online users event
-        socket.on("getOnlineUsers", (userIds) => {
+        socket.on("getOnlineUsers", (userIds) => {  //this means whenever this event named getonlineusers triggers run this fn ....under socket.js in backend this event is emitted
         set({ onlineUsers: userIds });
         });
     },
