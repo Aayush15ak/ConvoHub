@@ -5,15 +5,19 @@ import { useAuthStore } from "../store/useAuthStore";
 
 function ChatHeader() {
   const { selectedUser, setSelectedUser } = useChatStore();
+  const { onlineUsers } = useAuthStore();
+  const isOnline = onlineUsers.includes(selectedUser._id);
 
   useEffect(() => {
-    const handleEscKey = (e) => {
-        if(e.key === "Escape") setSelectedUser(null);
-    }
+    const handleEscKey = (event) => {
+      if (event.key === "Escape") setSelectedUser(null);
+    };
 
     window.addEventListener("keydown", handleEscKey);
-    return () => window.removeEventListener("keydown", handleEscKey);    //cleanup function
-  }, [setSelectedUser])
+
+    // cleanup function
+    return () => window.removeEventListener("keydown", handleEscKey);
+  }, [setSelectedUser]);
 
   return (
     <div
@@ -21,7 +25,7 @@ function ChatHeader() {
    border-slate-700/50 max-h-[84px] px-6 flex-1"
     >
       <div className="flex items-center space-x-3">
-        <div className={`avatar online`}>
+        <div className={`avatar ${isOnline ? "online" : "offline"}`}>
           <div className="w-12 rounded-full">
             <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
           </div>
@@ -29,7 +33,7 @@ function ChatHeader() {
 
         <div>
           <h3 className="text-slate-200 font-medium">{selectedUser.fullName}</h3>
-          <p className="text-slate-400 text-sm">Online</p>
+          <p className="text-slate-400 text-sm">{isOnline ? "Online" : "Offline"}</p>
         </div>
       </div>
 
@@ -39,7 +43,4 @@ function ChatHeader() {
     </div>
   );
 }
-
 export default ChatHeader;
-
-  
