@@ -1,6 +1,7 @@
 import Message from "../models/message.js";
 import User from "../models/User.js";
 import cloudinary from "../lib/cloudinary.js"; 
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 // to-do: Users can only chat with people they manually added as contacts, so we need to implement add contact feature in future and then only show those contacts in contacts list and allow users to chat with only those contacts, for now we are allowing users to chat with anyone by showing all users in contacts list except their own account
 export const getAllContacts = async (req, res) => {
@@ -61,9 +62,11 @@ export const sendMessage = async (req, res) => {
             image: imageUrl
         });
 
-        //to-do: send message in real time using socket.io if user in online instead of saving in database and then sending response
-
         await newMessage.save();
+
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if(receiverSocketId) io.to(receiverSocketId).emit("newMessage",newMessage);
+
         return res.status(201).json(newMessage);
 
     } catch (error) {

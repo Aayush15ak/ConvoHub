@@ -17,6 +17,10 @@ const io = new Server(server,{
 
 io.use(socketAuthMiddleware);
 
+export function getReceiverSocketId(userId){
+    return userSocketMap[userId];
+}
+
 // this is for storing online users
 const userSocketMap = {}; // {userId:socketId}
 
@@ -25,7 +29,7 @@ io.on("connection",(socket)=>{
     const userId = socket.userId;
     userSocketMap[userId] = socket.id;
 
-    io.emit("getOnlineUsers",Object.keys(userSocketMap));
+    io.emit("getOnlineUsers",Object.keys(userSocketMap)); //it means sending event to all connected clients with the event name getonlineusers
 
     // with socket.on we listen for events from clients
     socket.on("disconnect", () => {
