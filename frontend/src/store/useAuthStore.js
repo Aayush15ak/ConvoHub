@@ -1,8 +1,11 @@
-import {create} from "zustand";
+import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
-export const useAuthStore = create((set) => ({
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+
+export const useAuthStore = create((set,get) => ({
     authUser : null,
     isCheckingAuth : true,
     isSigningUp: false,
@@ -76,7 +79,7 @@ export const useAuthStore = create((set) => ({
             console.log("Logout error:", error);
         }
     },
-    //TO-DO ... while the profile pic is getting updating i want a loader on the avatar icon ... as now while the pic is updating in the backend the frontend already shows the pic before its even updated in the backend
+    
     updateProfile : async(data) => {
         set({isUpdatingProfilePic : true});
         try{
