@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
 export const socketAuthMiddleware = async (socket, next) => {
@@ -23,8 +23,8 @@ export const socketAuthMiddleware = async (socket, next) => {
       return next(new Error("Unauthorized - Invalid Token"));
     }
 
-    // find the user fromdb
-    const user = await User.findById(decoded.userId).select("-password");
+    // find the user from db
+    const user = await User.findById(decoded.id).select('-password');
     if (!user) {
       console.log("Socket connection rejected: User not found");
       return next(new Error("User not found"));

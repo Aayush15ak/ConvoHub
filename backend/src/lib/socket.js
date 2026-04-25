@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import dotenv from "dotenv";
-import { socketAuthMiddleware } from "../middleware/socket.auth.middleware";
+import { socketAuthMiddleware } from "../middleware/socket.auth.middleware.js";
 dotenv.config();
 
 const app = express();
