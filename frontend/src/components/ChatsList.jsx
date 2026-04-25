@@ -6,13 +6,14 @@ import { useAuthStore } from "../store/useAuthStore";
 
 function ChatsList() {
   const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();
+  const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
     getMyChatPartners();
-  },[getMyChatPartners]);
+  }, [getMyChatPartners]);
 
-  if(isUsersLoading) return <UsersLoadingSkeleton/>;
-  if(chats.length === 0) return <NoChatsFound/>;
+  if (isUsersLoading) return <UsersLoadingSkeleton />;
+  if (chats.length === 0) return <NoChatsFound />;
 
   return (
     <>
@@ -23,7 +24,7 @@ function ChatsList() {
           onClick={() => setSelectedUser(chat)}
         >
           <div className="flex items-center gap-3">
-            <div className={`avatar online`}>
+            <div className={`avatar ${onlineUsers.includes(chat._id) ? "online" : "offline"}`}>
               <div className="size-12 rounded-full">
                 <img src={chat.profilePic || "/avatar.png"} alt={chat.fullName} />
               </div>
@@ -33,7 +34,6 @@ function ChatsList() {
         </div>
       ))}
     </>
-  )
+  );
 }
-
-export default ChatsList
+export default ChatsList;
