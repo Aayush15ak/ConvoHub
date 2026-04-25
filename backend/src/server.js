@@ -7,15 +7,15 @@ import connectDB from './lib/db.js';
 import cookieParser from 'cookie-parser';
 dotenv.config();
 import cloudinary from './lib/cloudinary.js';
+import { app, server } from './lib/socket.js';
 
-const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
 
@@ -24,7 +24,7 @@ app.use('/api/messages', messageRoutes);
 
 // its better to connect to db first and then start the server, so that if db connection fails, we won't have a running server without db connection
 connectDB().then(() => {
-    app.listen(port, () => {
+    server.listen(port, () => {
         console.log(`Server is running on http://localhost:${port}`);
     });
 }).catch((error) => {
